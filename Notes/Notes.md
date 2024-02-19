@@ -1,6 +1,6 @@
 # SampleAspNetApplication
 
-[README](..\README.md)
+[README](../README.md)
 
 ## Problem details page
 
