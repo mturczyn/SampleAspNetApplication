@@ -18,4 +18,8 @@
     <ProjectReference Include="..\Intrinsic.WebApi.ExampleApp.DAL\Intrinsic.WebApi.ExampleApp.DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="README\" />
+  </ItemGroup>
+
 </Project>

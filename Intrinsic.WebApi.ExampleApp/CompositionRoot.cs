@@ -1,6 +1,8 @@
 ﻿using Intrinsic.WebApi.ExampleApp.AuthManagement;
 using Intrinsic.WebApi.ExampleApp.DAL;
+using Intrinsic.WebApi.ExampleApp.ProblemDetails;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Intrinsic.WebApi.ExampleApp;
 
@@ -18,6 +20,10 @@ public static class CompositionRoot
             .AddSqlServer<ExampleWebApiContext>(configuration.GetConnectionString("ExampleWebApiContext"))
             .AddSingleton<IAuthorizationPolicyProvider, AuthPolicyProvider>()
             .AddSingleton<IAuthorizationHandler, PermissionsAuthHandler>()
-            .AddTransient<IRepository, Repository>();
+            .AddTransient<IRepository, Repository>()
+            .AddProblemDetails()
+            .AddSingleton<ExceptionToProblemDetailsHandler>()
+            .AddExceptionHandler<ExceptionToProblemDetailsHandler>((opts, handler) => { })
+            ;
     }
 }

@@ -3,9 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34018.315
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intrinsic.WebApi.ExampleApp", "Intrinsic.WebApi.ExampleApp\Intrinsic.WebApi.ExampleApp.csproj", "{CBFF015E-48C8-46B2-8C9C-3FB9B4AC0C11}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Intrinsic.WebApi.ExampleApp", "Intrinsic.WebApi.ExampleApp\Intrinsic.WebApi.ExampleApp.csproj", "{CBFF015E-48C8-46B2-8C9C-3FB9B4AC0C11}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intrinsic.WebApi.ExampleApp.DAL", "Intrinsic.WebApi.ExampleApp.DAL\Intrinsic.WebApi.ExampleApp.DAL.csproj", "{5A28B0DB-2C83-468D-AB6A-2D480728C7D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Intrinsic.WebApi.ExampleApp.DAL", "Intrinsic.WebApi.ExampleApp.DAL\Intrinsic.WebApi.ExampleApp.DAL.csproj", "{5A28B0DB-2C83-468D-AB6A-2D480728C7D8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{43F8091E-3DD9-4177-9E2F-52F823D4EF1D}"
+	ProjectSection(SolutionItems) = preProject
+		Notes\Notes.md = Notes\Notes.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
