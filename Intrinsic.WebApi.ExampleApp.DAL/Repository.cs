@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Intrinsic.WebApi.ExampleApp.DAL;
 
 public interface IRepository
 {
-    Task<User[]> GetUsersAsync(CancellationToken cancellationToken);
+    Task<IdentityUser[]> GetTop10UsersAsync(CancellationToken cancellationToken);
 }
 
 public class Repository : IRepository
@@ -16,8 +17,8 @@ public class Repository : IRepository
         _context = context;
     }
 
-    public async Task<User[]> GetUsersAsync(CancellationToken cancellationToken)
+    public async Task<IdentityUser[]> GetTop10UsersAsync(CancellationToken cancellationToken)
     {
-        return await _context.Users.ToArrayAsync(cancellationToken);
+        return await _context.Users.Take(10).ToArrayAsync(cancellationToken);
     }
 }

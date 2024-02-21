@@ -17,10 +17,9 @@ public static class CompositionRoot
             .AddCookie();
 
         return services
-            .AddSqlServer<ExampleWebApiContext>(configuration.GetConnectionString("ExampleWebApiContext"))
+            .AddApplicationDal(configuration)
             .AddSingleton<IAuthorizationPolicyProvider, AuthPolicyProvider>()
             .AddSingleton<IAuthorizationHandler, PermissionsAuthHandler>()
-            .AddTransient<IRepository, Repository>()
             .AddProblemDetails()
             .AddSingleton<ExceptionToProblemDetailsHandler>()
             .AddExceptionHandler<ExceptionToProblemDetailsHandler>((opts, handler) => { })

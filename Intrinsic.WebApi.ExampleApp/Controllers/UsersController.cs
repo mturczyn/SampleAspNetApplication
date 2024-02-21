@@ -68,6 +68,6 @@ public class UsersController : ControllerBase
     public async Task<IActionResult> GetUsersAsync(
         CancellationToken cancellationToken)
     {
-        return Ok(await _userRepository.GetUsersAsync(cancellationToken));
+        return Ok(await _userRepository.GetTop10UsersAsync(cancellationToken));
     }
 }

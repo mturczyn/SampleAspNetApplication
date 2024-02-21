@@ -4,6 +4,7 @@ using Intrinsic.WebApi.ExampleApp.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Intrinsic.WebApi.ExampleApp.DAL.Migrations
 {
     [DbContext(typeof(ExampleWebApiContext))]
-    partial class ExampleWebApiContextModelSnapshot : ModelSnapshot
+    [Migration("20240221102112_AddedIdentityFromAspNetTemplates")]
+    partial class AddedIdentityFromAspNetTemplates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
