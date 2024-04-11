@@ -12,6 +12,12 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
+
+app.Use(async (context, next) =>
+{
+    await next();
+});
+
 app.UseStatusCodePages();
 app.UseExceptionHandler();
 

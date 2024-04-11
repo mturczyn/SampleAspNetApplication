@@ -12,7 +12,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Notes\Notes.md = Notes\Notes.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intrinsic.WebApi.ExampleApp.Website", "Intrinsic.WebApi.ExampleApp.Website\Intrinsic.WebApi.ExampleApp.Website.csproj", "{C7E8BA42-A40B-4ED5-BDBA-1875E15CD68C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Intrinsic.WebApi.ExampleApp.Website", "Intrinsic.WebApi.ExampleApp.Website\Intrinsic.WebApi.ExampleApp.Website.csproj", "{C7E8BA42-A40B-4ED5-BDBA-1875E15CD68C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intrinsic.WebApi.ExampleApp.Tests", "Intrinsic.WebApi.ExampleApp.Tests\Intrinsic.WebApi.ExampleApp.Tests.csproj", "{03CE7E71-915A-48E6-AAC2-56DAEB0AFAE5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,6 +34,10 @@ Global
 		{C7E8BA42-A40B-4ED5-BDBA-1875E15CD68C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7E8BA42-A40B-4ED5-BDBA-1875E15CD68C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C7E8BA42-A40B-4ED5-BDBA-1875E15CD68C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03CE7E71-915A-48E6-AAC2-56DAEB0AFAE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03CE7E71-915A-48E6-AAC2-56DAEB0AFAE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03CE7E71-915A-48E6-AAC2-56DAEB0AFAE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03CE7E71-915A-48E6-AAC2-56DAEB0AFAE5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
