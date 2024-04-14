@@ -8,7 +8,7 @@ namespace Intrinsic.WebApi.ExampleApp.Tests;
 public partial class GoatConverterTests
 {
     // We use a Regex to check the result is valid
-    [GeneratedRegex("^(?:M|Ba|Meh|Baa|Meeh|Baaa|🐐)+$")]
+    [GeneratedRegex("^(?:M|Ba|Meh|Baa|Meeh|Baaa|Meu|🐐)+$")]
     private static partial Regex ValidGoatRegex();
 
     private static bool AllGoatCharactersAreValid(string goatNumber)
