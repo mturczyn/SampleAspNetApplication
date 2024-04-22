@@ -61,13 +61,33 @@ public class UsersController : ControllerBase
     [Authorize]
     public IActionResult Get()
     {
-        return Ok(User.Claims.Select(c => new { c.Type, c.Value }));
+        SetCookie("testkey", "testvalue");
+        var claims = User.Claims.Select(c => new { c.Type, c.Value });
+        return Ok(claims);
     }
 
     [HttpGet("getUsers")]
     public async Task<IActionResult> GetUsersAsync(
         CancellationToken cancellationToken)
     {
-        return Ok(await _userRepository.GetTop10UsersAsync(cancellationToken));
+        SetCookie("testkey", "testvalue");
+        var top10Users = await _userRepository.GetTop10UsersAsync(cancellationToken);
+        return Ok(top10Users);
     }
+
+private void SetCookie(string key, string value)
+{
+    var cookieOptions = new CookieOptions()
+    {
+        SameSite = SameSiteMode.Strict,
+        Secure = true,
+        Expires = DateTime.Now.AddDays(350),
+        Domain = HttpContext.Request.Host.Host,
+    };
+
+    HttpContext.Response.Cookies.Append(
+        key,
+        value,
+        cookieOptions);
+}
 }
