@@ -20,7 +20,7 @@ public class UsersController : ControllerBase
         _userRepository = userRepository;
     }
 
-    [HttpGet("/login")]
+    [HttpGet("login")]
     public async Task<IActionResult> LoginAsync(
         [FromQuery] string[] neededPermissions)
     {
@@ -40,7 +40,7 @@ public class UsersController : ControllerBase
         return Ok();
     }
 
-    [HttpGet("/create")]
+    [HttpGet("create")]
     [PermissionAuth(
         PermissionOperator.And, 
         UserManagement.Permission.Create)]
@@ -49,7 +49,7 @@ public class UsersController : ControllerBase
         return Ok(new { Result = "Created!" });
     }
 
-    [HttpGet("/logout")]
+    [HttpGet("logout")]
     [Authorize]
     public async Task<IActionResult> LogoutAsync()
     {

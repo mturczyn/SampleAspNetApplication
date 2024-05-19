@@ -14,7 +14,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Intrinsic.WebApi.ExampleApp.Website", "Intrinsic.WebApi.ExampleApp.Website\Intrinsic.WebApi.ExampleApp.Website.csproj", "{C7E8BA42-A40B-4ED5-BDBA-1875E15CD68C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intrinsic.WebApi.ExampleApp.Tests", "Intrinsic.WebApi.ExampleApp.Tests\Intrinsic.WebApi.ExampleApp.Tests.csproj", "{03CE7E71-915A-48E6-AAC2-56DAEB0AFAE5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Intrinsic.WebApi.ExampleApp.Tests", "Intrinsic.WebApi.ExampleApp.Tests\Intrinsic.WebApi.ExampleApp.Tests.csproj", "{03CE7E71-915A-48E6-AAC2-56DAEB0AFAE5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SocketProgramming", "SocketProgramming", "{17E252BD-52E9-4880-B1AD-6E43A5EA3E53}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intrinsic.Sockets.Server", "Intrinsic.Sockets.Server\Intrinsic.Sockets.Server.csproj", "{E2DCDE4D-7CE0-4419-B709-23BBC1671511}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intrinsic.Sockets.Client", "Intrinsic.Sockets.Client\Intrinsic.Sockets.Client.csproj", "{DDC5A27F-A42E-4569-A8C5-BCF567828F48}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intrinsic.Sockets.ConsoleApp", "Intrinsic.Sockets.ConsoleApp\Intrinsic.Sockets.ConsoleApp.csproj", "{966EDA56-8BC8-48DF-B0E1-4F2D1B3DCF67}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intrinsic.Utis", "Intrinsic.Utis\Intrinsic.Utis.csproj", "{826FE95B-45BA-46DA-8FD2-11F54A016186}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,9 +48,30 @@ Global
 		{03CE7E71-915A-48E6-AAC2-56DAEB0AFAE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03CE7E71-915A-48E6-AAC2-56DAEB0AFAE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{03CE7E71-915A-48E6-AAC2-56DAEB0AFAE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2DCDE4D-7CE0-4419-B709-23BBC1671511}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2DCDE4D-7CE0-4419-B709-23BBC1671511}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2DCDE4D-7CE0-4419-B709-23BBC1671511}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2DCDE4D-7CE0-4419-B709-23BBC1671511}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDC5A27F-A42E-4569-A8C5-BCF567828F48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDC5A27F-A42E-4569-A8C5-BCF567828F48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDC5A27F-A42E-4569-A8C5-BCF567828F48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDC5A27F-A42E-4569-A8C5-BCF567828F48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{966EDA56-8BC8-48DF-B0E1-4F2D1B3DCF67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{966EDA56-8BC8-48DF-B0E1-4F2D1B3DCF67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{966EDA56-8BC8-48DF-B0E1-4F2D1B3DCF67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{966EDA56-8BC8-48DF-B0E1-4F2D1B3DCF67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{826FE95B-45BA-46DA-8FD2-11F54A016186}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{826FE95B-45BA-46DA-8FD2-11F54A016186}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{826FE95B-45BA-46DA-8FD2-11F54A016186}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{826FE95B-45BA-46DA-8FD2-11F54A016186}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E2DCDE4D-7CE0-4419-B709-23BBC1671511} = {17E252BD-52E9-4880-B1AD-6E43A5EA3E53}
+		{DDC5A27F-A42E-4569-A8C5-BCF567828F48} = {17E252BD-52E9-4880-B1AD-6E43A5EA3E53}
+		{966EDA56-8BC8-48DF-B0E1-4F2D1B3DCF67} = {17E252BD-52E9-4880-B1AD-6E43A5EA3E53}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {32BAC638-4275-4BF2-82FB-3F2782797705}

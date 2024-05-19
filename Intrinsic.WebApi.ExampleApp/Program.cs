@@ -12,7 +12,6 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
-
 app.Use(async (context, next) =>
 {
     await next();
@@ -53,6 +52,8 @@ app.MapGet("/weatherforecast", () =>
 .WithOpenApi();
 
 app.Run();
+
+public partial class Program { }
 
 internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {
