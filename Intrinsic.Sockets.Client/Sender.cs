@@ -4,18 +4,21 @@ using System.Text.Json;
 using System.Text;
 using Intrinsic.Sockets.Server.DTOs;
 using Intrinsic.Utis;
+using System.Threading;
 
 namespace Intrinsic.Sockets.Client;
 
 public static class Sender
 {
+    public const byte CHUNK_SIZE = 7;
+
     public static async Task SendToServerAsync(
         IPEndPoint ipEndPoint, 
         CancellationToken cancellationToken)
     {
         // Example data object to serialize and send
         var dataObject = new ServerRequestDto(
-            "Chris Doe",
+            "Chris Doel",
             30,
             "chrisdoe@example.com");
 
@@ -26,16 +29,35 @@ public static class Sender
         byte[] byteData = Encoding.UTF8.GetBytes(jsonString);
 
         // Create a TCP/IP socket
-        Socket clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        using Socket clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
         // Connect to the remote endpoint
         await clientSocket.ConnectAsync(ipEndPoint);
 
+        var bytesSent = await SendDataToServerAsync(
+            clientSocket, 
+            byteData, 
+            true,
+            cancellationToken);
+
         Logger.Log("Sending data to server");
 
-        // Send the serialized data to the server
-        int bytesSent = await clientSocket.SendAsync(byteData, cancellationToken);
+        Logger.Log($"Sent data to server. Bytes sent: {bytesSent}");
+    }
 
-        Logger.Log("Sent data to server");
+    public static async Task<int> SendDataToServerAsync(
+        Socket clientSocket,
+        byte[] dataToSend,
+        bool chunked,
+        CancellationToken cancellationToken)
+    {
+        // Send the serialized data to the server
+        return chunked 
+            ? await clientSocket.SendAsync(
+                dataToSend
+                    .Chunk(CHUNK_SIZE)
+                    .Select(x => new ArraySegment<byte>(x))
+                    .ToList())
+            : await clientSocket.SendAsync(dataToSend, cancellationToken);
     }
 }

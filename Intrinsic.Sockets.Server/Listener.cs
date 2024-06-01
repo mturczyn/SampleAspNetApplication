@@ -9,18 +9,20 @@ namespace Intrinsic.Sockets.Server;
 
 public static class Listener
 {
+    public const byte BUFFER_SIZE = 200;
+
     public static async Task Receive(int port, CancellationToken cancellationToken)
     {
-        Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        using Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
         var bufferSize = 8192;
         socket.SetSocketOption(
-            SocketOptionLevel.Socket, 
+            SocketOptionLevel.Socket,
             SocketOptionName.SendBuffer,
             bufferSize);
 
         socket.SetSocketOption(
-            SocketOptionLevel.Socket, 
+            SocketOptionLevel.Socket,
             SocketOptionName.ReceiveBuffer,
             bufferSize);
 
@@ -33,21 +35,43 @@ public static class Listener
 
         socket.Bind(localEndPoint);
 
-        byte[] buffer = new byte[1024];
-
         socket.Listen();
 
         Logger.Log("Starting to accept the connections");
 
-        var handler = await socket.AcceptAsync();
+        using var handler = await socket.AcceptAsync();
 
         Logger.Log("Accepted the connection");
 
-        var received = await handler.ReceiveAsync(buffer, SocketFlags.None, cancellationToken);
+        var received = await ReceiveResponseFromClientAsync(
+            handler, 
+            cancellationToken);
 
-        Logger.Log("Received data");
+        Logger.Log($"Received data, bytes received: {received}");
 
         var dataObject = JsonSerializer.Deserialize<ServerRequestDto>(
-            Encoding.UTF8.GetString(buffer[0..received]));
+            Encoding.UTF8.GetString(received));
+    }
+
+    private static async Task<byte[]> ReceiveResponseFromClientAsync(Socket handler, CancellationToken cancellationToken)
+    {
+        var response = new List<byte>();
+
+        byte[] buffer = new byte[BUFFER_SIZE];
+
+        int received;
+        do
+        {
+            received = await handler.ReceiveAsync(
+                buffer,
+                SocketFlags.None,
+                cancellationToken);
+            
+            Logger.Log($"Receiving batched payload from {handler.RemoteEndPoint}. Received {received} bytes.");
+
+            response.AddRange(buffer[0..received]);
+        } while (received > 0);
+
+        return response.ToArray();
     }
 }
