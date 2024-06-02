@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Collections.Concurrent;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
@@ -9,11 +10,38 @@ namespace Intrinsic.Sockets.Server;
 
 public static class Listener
 {
+    public static string ACK_MESSAGE = "Succesfully received data";
     public const byte BUFFER_SIZE = 200;
+    public const byte RECEIVE_TIMEOUT_MS = 1;
 
-    public static async Task Receive(int port, CancellationToken cancellationToken)
+    private readonly static CancellationTokenSource _cancellationTokenSource = 
+        new CancellationTokenSource();
+    private static bool STOP_LISTENING = false;
+    private readonly static List<Task> _tasks = new();
+    private readonly static ConcurrentBag<object> _receivedData = new();
+
+    public static async Task TryReceive(int port, CancellationToken cancellationToken)
+    {
+        try
+        {
+            await Receive(port, cancellationToken);
+        }
+        catch (SocketException se) when (se.SocketErrorCode == SocketError.TimedOut)
+        {
+            Logger.Log($"Receiving timed out! Error Message: {se.Message}");
+        }
+        catch (SocketException se)
+        {
+            Logger.Log($"Socket error has happened! {se.Message}");
+            Logger.Log($"Error Code: {se.SocketErrorCode}");
+        }
+    }
+
+    private static async Task Receive(int port, CancellationToken cancellationToken)
     {
         using Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
+        socket.ReceiveTimeout = RECEIVE_TIMEOUT_MS;
 
         var bufferSize = 8192;
         socket.SetSocketOption(
@@ -39,39 +67,96 @@ public static class Listener
 
         Logger.Log("Starting to accept the connections");
 
-        using var handler = await socket.AcceptAsync();
+        while (true)
+        {
+            try 
+            {
+                using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(
+                    _cancellationTokenSource.Token,
+                    cancellationToken);
+                _tasks.Add(
+                    HandleIncomingConnectionAsync(
+                        await socket.AcceptAsync(linkedCts.Token), 
+                        cancellationToken));
+            }
+            catch (Exception tce)
+            {
+                if (tce is TaskCanceledException or OperationCanceledException)
+                {
+                    Logger.Log($"Cancelled task! {tce.Message}");
+                    break;
+                }
+                throw;
+            }
+        }
 
-        Logger.Log("Accepted the connection");
+        await Task.WhenAll(_tasks);
 
-        var received = await ReceiveResponseFromClientAsync(
-            handler, 
-            cancellationToken);
-
-        Logger.Log($"Received data, bytes received: {received}");
-
-        var dataObject = JsonSerializer.Deserialize<ServerRequestDto>(
-            Encoding.UTF8.GetString(received));
+        Logger.Log("Received data objects:");
+        foreach (var dataObject in _receivedData)
+        {
+            Logger.Log(JsonSerializer.Serialize(dataObject));
+        }
     }
 
-    private static async Task<byte[]> ReceiveResponseFromClientAsync(Socket handler, CancellationToken cancellationToken)
+    public static void Interrupt()
     {
-        var response = new List<byte>();
+        //STOP_LISTENING = true;
+        _cancellationTokenSource.Cancel();
+    }
 
-        byte[] buffer = new byte[BUFFER_SIZE];
-
-        int received;
-        do
+    private static async Task HandleIncomingConnectionAsync(Socket handler, CancellationToken cancellationToken)
+    {
+        try
         {
-            received = await handler.ReceiveAsync(
-                buffer,
-                SocketFlags.None,
+            Logger.Log("Accepted the connection");
+
+            var received = await ReceiveResponseFromClientAsync(
+                handler,
                 cancellationToken);
-            
-            Logger.Log($"Receiving batched payload from {handler.RemoteEndPoint}. Received {received} bytes.");
 
-            response.AddRange(buffer[0..received]);
-        } while (received > 0);
+            if (!received.Any())
+            {
+                return;
+            }
 
-        return response.ToArray();
+            Logger.Log($"Received data, bytes received: {received.Length}");
+
+            var dataObject = JsonSerializer.Deserialize<ServerRequestDto>(
+                Encoding.UTF8.GetString(received));
+
+            // Does not work yet.
+            //await handler.SendAsync(Encoding.UTF8.GetBytes(ACK_MESSAGE));
+
+            _receivedData.Add(dataObject);
+        }
+        finally
+        {
+            handler.Dispose();
+        }
+    }
+
+    private static async Task<byte[]> ReceiveResponseFromClientAsync(
+        Socket handler, 
+        CancellationToken cancellationToken)
+    {
+            var response = new List<byte>();
+
+            byte[] buffer = new byte[BUFFER_SIZE];
+
+            int received;
+            do
+            {
+                received = await handler.ReceiveAsync(
+                    buffer,
+                    SocketFlags.None,
+                    cancellationToken);
+
+                Logger.Log($"Receiving batched payload from {handler.RemoteEndPoint}. Received {received} bytes.");
+
+                response.AddRange(buffer[0..received]);
+            } while (received > 0);
+
+            return response.ToArray();
     }
 }

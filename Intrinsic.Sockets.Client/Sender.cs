@@ -1,20 +1,44 @@
-﻿using System.Net.Sockets;
-using System.Net;
-using System.Text.Json;
-using System.Text;
-using Intrinsic.Sockets.Server.DTOs;
+﻿using Intrinsic.Sockets.Server.DTOs;
 using Intrinsic.Utis;
-using System.Threading;
+using System.Collections.Concurrent;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+using System.Text.Json;
 
 namespace Intrinsic.Sockets.Client;
 
 public static class Sender
 {
     public const byte CHUNK_SIZE = 7;
+    public const byte SEND_TIMEOUT_MS = 1;
 
-    public static async Task SendToServerAsync(
-        IPEndPoint ipEndPoint, 
+    public static async Task TrySendToServerAsync(
+        IPEndPoint ipEndPoint,
         CancellationToken cancellationToken)
+    {
+        try
+        {
+            await SendToServerAsync(ipEndPoint, cancellationToken);
+        }
+        catch (SocketException se) when (se.SocketErrorCode == SocketError.ConnectionRefused)
+        {
+            Logger.Log($"Connection refused! Error Message: {se.Message}");
+        }
+        catch (SocketException se) when (se.SocketErrorCode == SocketError.TimedOut)
+        {
+            Logger.Log($"Sending timed out! Error Message: {se.Message}");
+        }
+        catch (SocketException se)
+        {
+            Logger.Log($"Socket error has happened! {se.Message}");
+            Logger.Log($"Error Code: {se.SocketErrorCode}");
+        }
+    }
+
+    private static async Task SendToServerAsync(
+    IPEndPoint ipEndPoint,
+    CancellationToken cancellationToken)
     {
         // Example data object to serialize and send
         var dataObject = new ServerRequestDto(
@@ -31,14 +55,25 @@ public static class Sender
         // Create a TCP/IP socket
         using Socket clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
+        clientSocket.SendTimeout = SEND_TIMEOUT_MS;
+
         // Connect to the remote endpoint
         await clientSocket.ConnectAsync(ipEndPoint);
 
         var bytesSent = await SendDataToServerAsync(
-            clientSocket, 
-            byteData, 
+            clientSocket,
+            byteData,
             true,
             cancellationToken);
+
+        // Does not work yet.
+        //var responseBuffer = new byte[1024];
+        //clientSocket
+        //    .ReceiveAsync(responseBuffer, cancellationToken)
+        //    .AsTask()
+        //    .ContinueWith(t => Console.WriteLine("ASDFASDFASDFASFASDF " +
+        //        Encoding.UTF8.GetString(responseBuffer[0..t.Result])
+        //        ));
 
         Logger.Log("Sending data to server");
 
@@ -52,12 +87,14 @@ public static class Sender
         CancellationToken cancellationToken)
     {
         // Send the serialized data to the server
-        return chunked 
+        var sentBytes = chunked
             ? await clientSocket.SendAsync(
                 dataToSend
                     .Chunk(CHUNK_SIZE)
                     .Select(x => new ArraySegment<byte>(x))
                     .ToList())
             : await clientSocket.SendAsync(dataToSend, cancellationToken);
+
+        return sentBytes;
     }
 }
