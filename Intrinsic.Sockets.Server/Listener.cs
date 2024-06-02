@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Data;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -10,13 +11,12 @@ namespace Intrinsic.Sockets.Server;
 
 public static class Listener
 {
-    public static string ACK_MESSAGE = "Succesfully received data";
+    public static string ACK_MESSAGE = "Succesfully received data ({0} bytes)";
     public const byte BUFFER_SIZE = 200;
     public const byte RECEIVE_TIMEOUT_MS = 1;
 
     private readonly static CancellationTokenSource _cancellationTokenSource = 
         new CancellationTokenSource();
-    private static bool STOP_LISTENING = false;
     private readonly static List<Task> _tasks = new();
     private readonly static ConcurrentBag<object> _receivedData = new();
 
@@ -101,7 +101,6 @@ public static class Listener
 
     public static void Interrupt()
     {
-        //STOP_LISTENING = true;
         _cancellationTokenSource.Cancel();
     }
 
@@ -125,10 +124,14 @@ public static class Listener
             var dataObject = JsonSerializer.Deserialize<ServerRequestDto>(
                 Encoding.UTF8.GetString(received));
 
-            // Does not work yet.
-            //await handler.SendAsync(Encoding.UTF8.GetBytes(ACK_MESSAGE));
+            await handler.SendAsync(
+                Encoding.UTF8.GetBytes(
+                    string.Format(ACK_MESSAGE, received.Length)));
 
-            _receivedData.Add(dataObject);
+            if (dataObject is not null)
+            {
+                _receivedData.Add(dataObject);
+            }
         }
         finally
         {

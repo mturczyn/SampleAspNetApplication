@@ -66,21 +66,19 @@ public static class Sender
             true,
             cancellationToken);
 
-        // Does not work yet.
-        //var responseBuffer = new byte[1024];
-        //clientSocket
-        //    .ReceiveAsync(responseBuffer, cancellationToken)
-        //    .AsTask()
-        //    .ContinueWith(t => Console.WriteLine("ASDFASDFASDFASFASDF " +
-        //        Encoding.UTF8.GetString(responseBuffer[0..t.Result])
-        //        ));
+        var responseBuffer = new byte[1024];
+        var responseBytesReceived = await clientSocket.ReceiveAsync(
+            responseBuffer,
+            cancellationToken);
 
+        Logger.Log($"Server acknowledged receiving data with message:\n\n{Encoding.UTF8.GetString(responseBuffer[0..responseBytesReceived])}\n");
+                
         Logger.Log("Sending data to server");
 
         Logger.Log($"Sent data to server. Bytes sent: {bytesSent}");
     }
 
-    public static async Task<int> SendDataToServerAsync(
+    private static async Task<int> SendDataToServerAsync(
         Socket clientSocket,
         byte[] dataToSend,
         bool chunked,
@@ -94,6 +92,9 @@ public static class Sender
                     .Select(x => new ArraySegment<byte>(x))
                     .ToList())
             : await clientSocket.SendAsync(dataToSend, cancellationToken);
+
+        // In order to terminate receiving process on the server side.
+        clientSocket.Shutdown(SocketShutdown.Send);
 
         return sentBytes;
     }
