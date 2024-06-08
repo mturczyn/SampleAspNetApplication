@@ -1,6 +1,4 @@
-﻿using Intrinsic.Sockets.Server.DTOs;
-using Intrinsic.Utis;
-using System.Collections.Concurrent;
+﻿using Intrinsic.Utis;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -41,10 +39,7 @@ public static class Sender
     CancellationToken cancellationToken)
     {
         // Example data object to serialize and send
-        var dataObject = new ServerRequestDto(
-            "Chris Doel",
-            30,
-            "chrisdoe@example.com");
+        var dataObject = RandomDataGenerator.GenerateServerRequestDto();
 
         // Serialize the object to a JSON string
         string jsonString = JsonSerializer.Serialize(dataObject);
@@ -72,7 +67,7 @@ public static class Sender
             cancellationToken);
 
         Logger.Log($"Server acknowledged receiving data with message:\n\n{Encoding.UTF8.GetString(responseBuffer[0..responseBytesReceived])}\n");
-                
+
         Logger.Log("Sending data to server");
 
         Logger.Log($"Sent data to server. Bytes sent: {bytesSent}");
