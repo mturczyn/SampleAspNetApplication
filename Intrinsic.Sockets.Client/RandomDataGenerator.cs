@@ -21,12 +21,12 @@ internal class RandomDataGenerator
     public static ServerRequestDto GenerateServerRequestDto()
     {
         return new ServerRequestDto(
-            GetRandomItemFromArray(Names),
+            GetRandomItem(Names),
             Random.Shared.Next(1, 100),
-            GetRandomItemFromArray(Emails));
+            GetRandomItem(Emails));
     }
 
-    private static T GetRandomItemFromArray<T>(T[] array)
+    private static T GetRandomItem<T>(T[] array)
     {
         return array[Random.Shared.NextInt64(array.Length)];
     }
