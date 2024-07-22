@@ -51,6 +51,8 @@ app.MapGet("/weatherforecast", () =>
 .WithName("GetWeatherForecast")
 .WithOpenApi();
 
+app.MapMoviesEndpoints();
+
 app.Run();
 
 public partial class Program { }

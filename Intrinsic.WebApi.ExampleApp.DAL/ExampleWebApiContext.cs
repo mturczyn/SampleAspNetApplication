@@ -13,4 +13,6 @@ public class ExampleWebApiContext : IdentityDbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
         => options.UseSqlServer();
+
+    public DbSet<Movie> Movies { get; set; }
 }
