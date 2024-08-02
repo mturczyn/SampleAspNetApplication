@@ -7,6 +7,6 @@
   </PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Intrinsic.Utis\Intrinsic.Utis.csproj" />
+		<ProjectReference Include="..\Intrinsic.Utis\Intrinsic.Utils.csproj" />
 	</ItemGroup>
 </Project>

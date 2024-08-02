@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Intrinsic.Sockets.Server\Intrinsic.Sockets.Server.csproj" />
-    <ProjectReference Include="..\Intrinsic.Utis\Intrinsic.Utis.csproj" />
+    <ProjectReference Include="..\Intrinsic.Utis\Intrinsic.Utils.csproj" />
   </ItemGroup>
 
 </Project>

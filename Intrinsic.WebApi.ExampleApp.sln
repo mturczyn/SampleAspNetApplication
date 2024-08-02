@@ -18,13 +18,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Intrinsic.WebApi.ExampleApp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SocketProgramming", "SocketProgramming", "{17E252BD-52E9-4880-B1AD-6E43A5EA3E53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intrinsic.Sockets.Server", "Intrinsic.Sockets.Server\Intrinsic.Sockets.Server.csproj", "{E2DCDE4D-7CE0-4419-B709-23BBC1671511}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Intrinsic.Sockets.Server", "Intrinsic.Sockets.Server\Intrinsic.Sockets.Server.csproj", "{E2DCDE4D-7CE0-4419-B709-23BBC1671511}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intrinsic.Sockets.Client", "Intrinsic.Sockets.Client\Intrinsic.Sockets.Client.csproj", "{DDC5A27F-A42E-4569-A8C5-BCF567828F48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Intrinsic.Sockets.Client", "Intrinsic.Sockets.Client\Intrinsic.Sockets.Client.csproj", "{DDC5A27F-A42E-4569-A8C5-BCF567828F48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intrinsic.Sockets.ConsoleApp", "Intrinsic.Sockets.ConsoleApp\Intrinsic.Sockets.ConsoleApp.csproj", "{966EDA56-8BC8-48DF-B0E1-4F2D1B3DCF67}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Intrinsic.Sockets.ConsoleApp", "Intrinsic.Sockets.ConsoleApp\Intrinsic.Sockets.ConsoleApp.csproj", "{966EDA56-8BC8-48DF-B0E1-4F2D1B3DCF67}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intrinsic.Utis", "Intrinsic.Utis\Intrinsic.Utis.csproj", "{826FE95B-45BA-46DA-8FD2-11F54A016186}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Intrinsic.Utils", "Intrinsic.Utis\Intrinsic.Utils.csproj", "{826FE95B-45BA-46DA-8FD2-11F54A016186}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

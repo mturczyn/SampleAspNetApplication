@@ -1,4 +1,5 @@
 using Intrinsic.WebApi.ExampleApp;
+using Microsoft.AspNetCore.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -51,6 +52,9 @@ app.MapGet("/weatherforecast", () =>
 .WithName("GetWeatherForecast")
 .WithOpenApi();
 
+app.MapGet("/crash-exc", (_) => throw new Exception());
+app.MapGet("/crash-inv-op-exc", (_) => throw new InvalidOperationException());
+
 app.MapMoviesEndpoints();
 
 app.Run();
@@ -61,3 +65,4 @@ internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary
 {
     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
 }
+
